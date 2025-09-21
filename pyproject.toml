@@ -26,8 +26,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://example.com/eleganplot"
-Repository = "https://example.com/eleganplot/repo"
+Homepage = "https://github.com/AlFrauch/eleganplot"
+Repository = "https://github.com/AlFrauch/eleganplot"
+Documentation = "https://github.com/AlFrauch/eleganplot#readme"
+"Bug Tracker" = "https://github.com/AlFrauch/eleganplot/issues"
 
 [project.scripts]
 eplot = "eleganplot.cli:main"
