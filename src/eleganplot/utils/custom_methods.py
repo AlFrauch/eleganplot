@@ -20,6 +20,7 @@ def gradient_plot_method(
     self, 
     x, 
     y, 
+    line: Optional[Line2D] = None,
     fill_color: Optional[str] = None,
     alpha_coef: float = 1.0,
     gradient_to_min: bool = False,
@@ -61,6 +62,7 @@ def gradient_plot_method(
     return gradient_fill(
         x=x,
         y=y, 
+        line=line,
         fill_color=fill_color,
         ax=self._ax,
         alpha_coef=alpha_coef,
@@ -75,6 +77,7 @@ def glow_line_method(
     self, 
     x, 
     y, 
+    main_line: Optional[Line2D] = None,
     glow_color: Optional[str] = None,
     glow_width: float = 3.0,
     glow_alpha: float = 0.5,
@@ -131,7 +134,8 @@ def glow_line_method(
     """
     return glow_line(
         x=x,
-        y=y, 
+        y=y,
+        main_line = main_line,
         glow_color=glow_color,
         glow_width=glow_width,
         glow_alpha=glow_alpha,

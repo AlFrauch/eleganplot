@@ -10,12 +10,14 @@ from matplotlib.image import AxesImage
 
 def gradient_fill(
     x: np.ndarray, 
-    y: np.ndarray, 
+    y: np.ndarray,
+    line: Optional[Line2D] = None,
     fill_color: Optional[str] = None, 
     ax: Optional[Axes] = None,
     alpha_coef: float = 1.0, 
     gradient_to_min: bool = False, 
     gradient_steps: int = 100,
+    autoscale: bool = False,
     **plot_kwargs
 ) -> Tuple[Line2D, AxesImage]:
     """
@@ -27,6 +29,8 @@ def gradient_fill(
         Координаты X для линии
     y : np.ndarray  
         Координаты Y для линии
+    line: Optional[Line2D]
+        Объект линия если уже создан и настроен и требуется применить градиент к ней
     fill_color : Optional[str]
         Цвет для заливки. Если None, будет использован цвет линии
     ax : Optional[Axes]
@@ -54,7 +58,8 @@ def gradient_fill(
         ax = plt.gca()
 
     # Строим основную линию
-    line, = ax.plot(x, y, **plot_kwargs)
+    if line is None:
+        line, = ax.plot(x, y, **plot_kwargs)
 
     # Определяем цвет заливки
     if fill_color is None:
@@ -90,7 +95,7 @@ def gradient_fill(
     gradient_image.set_clip_path(clip_path)
 
     # Автоматически подстраиваем масштаб
-    ax.autoscale(True)
+    ax.autoscale(autoscale)
     
     return line, gradient_image
 

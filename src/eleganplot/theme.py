@@ -92,6 +92,17 @@ FRAUCH = Theme(
 )
 
 
+FRAUCH_NEW = Theme(
+    name="Frauch",
+    background_color="#000c16",
+    axes_facecolor="#000c16",
+    grid_color="#a9bac9",
+    text_color="#787878",
+    palette=[],
+    extra_rc={"text.usetex": True},
+)
+
+
 THEMES: Mapping[str, Theme] = {
     "dark": ELEGAN_DARK,
     "light": ELEGAN_LIGHT,
@@ -101,7 +112,7 @@ THEMES: Mapping[str, Theme] = {
 }
 
 
-_CURRENT_THEME: Theme = FRAUCH
+_CURRENT_THEME: Theme = FRAUCH_NEW
 
 
 def set_current_theme(theme: Theme | str) -> Theme:

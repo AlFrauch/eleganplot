@@ -10,6 +10,7 @@ from typing import Optional, Tuple
 def glow_line(
     x: np.ndarray,
     y: np.ndarray,
+    main_line: Optional[Line2D] = None,
     glow_color: Optional[str] = None,
     glow_width: float = 3.0,
     glow_alpha: float = 0.5,
@@ -29,6 +30,8 @@ def glow_line(
         Координаты X для линии
     y : np.ndarray
         Координаты Y для линии
+    main_line: Optional[Line2D]
+        Объект линия если уже создан и настроен и требуется применить градиент к ней
     glow_color : Optional[str]
         Цвет свечения. Если None, используется цвет основной линии
     glow_width : float
@@ -63,7 +66,8 @@ def glow_line(
         ax = plt.gca()
     
     # Строим основную линию
-    main_line, = ax.plot(x, y, **plot_kwargs)
+    if main_line is None:
+        main_line, = ax.plot(x, y, **plot_kwargs)
     
     # Определяем цвет свечения
     if glow_color is None:
