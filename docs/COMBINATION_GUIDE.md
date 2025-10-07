@@ -1,5 +1,7 @@
 # Руководство по комбинированию методов EleganPlot
 
+![Пример комбинирования методов](images/demo_output.png)
+
 ## Быстрый старт
 
 ### Базовое комбинирование glow_line + gradient_plot
@@ -217,6 +219,7 @@ ax.glow_line(x, y, glow_layers=6, glow_width=2.0)
 5. **Создавайте переиспользуемые методы** для часто используемых комбинаций
 
 Смотрите `examples/combination_methods_example.py` для полных рабочих примеров!
+
 
 
 
