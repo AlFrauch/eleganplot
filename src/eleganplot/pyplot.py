@@ -7,9 +7,11 @@ from __future__ import annotations
 
 from typing import Any
 
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
+from matplotlib.colors import LinearSegmentedColormap
 
 from .theme import apply_theme
 from .utils.decorators import apply_custom_methods
@@ -116,11 +118,99 @@ def subplots(*args, **kwargs) -> tuple[Figure, EleganAxes | Any]:
         wrapped_ax = EleganAxes(ax)
     else:
         # Массив осей - обёртываем каждую
-        import numpy as np
         wrapped_ax = np.array([[EleganAxes(axis) for axis in row] if hasattr(row, '__iter__') else EleganAxes(row) 
                               for row in ax] if ax.ndim > 1 else [EleganAxes(axis) for axis in ax])
     
     return fig, wrapped_ax
+
+
+def gradient_subplots(
+    figsize: tuple[float, float] = (8, 5),
+    dpi: int | None = None,
+    gradient_colors: tuple[str, str] = ("#00080a", "#042628"),
+    axes_position: tuple[float, float, float, float] = (0.12, 0.12, 0.75, 0.75),
+    nx: int = 512,
+    ny: int = 64,
+    **kwargs
+) -> tuple[Figure, EleganAxes]:
+    """Создаёт фигуру с градиентным фоном и оси для построения графиков.
+    
+    Эта функция создает фигуру с красивым градиентным фоном и возвращает
+    основную ось с прозрачным фоном для рисования графиков поверх градиента.
+    
+    Parameters
+    ----------
+    figsize : tuple[float, float], optional
+        Размер фигуры (ширина, высота) в дюймах, по умолчанию (8, 5)
+    dpi : int | None, optional
+        Разрешение фигуры в точках на дюйм, по умолчанию None
+    gradient_colors : tuple[str, str], optional
+        Цвета для градиента (начальный, конечный), по умолчанию ("#00080a", "#042628")
+    axes_position : tuple[float, float, float, float], optional
+        Позиция осей в формате [left, bottom, width, height] в относительных координатах,
+        по умолчанию (0.12, 0.12, 0.75, 0.75)
+    nx : int, optional
+        Разрешение градиента по горизонтали, по умолчанию 512
+    ny : int, optional
+        Разрешение градиента по вертикали, по умолчанию 64
+    **kwargs
+        Дополнительные аргументы для matplotlib.pyplot.figure()
+    
+    Returns
+    -------
+    tuple[Figure, EleganAxes]
+        Кортеж из объекта фигуры и обёрнутых осей для построения графиков
+        
+    Examples
+    --------
+    >>> import eleganplot as eplt
+    >>> fig, ax = eplt.gradient_subplots(dpi=200)
+    >>> ax.plot([1, 2, 3], [1, 4, 2])
+    >>> eplt.show()
+    
+    С кастомными цветами градиента:
+    >>> fig, ax = eplt.gradient_subplots(
+    ...     gradient_colors=("#1a0033", "#330066"),
+    ...     figsize=(10, 6)
+    ... )
+    """
+    # Применяем текущую тему
+    apply_theme()
+    
+    # Создаём параметры для фигуры
+    fig_kwargs = {'figsize': figsize}
+    if dpi is not None:
+        fig_kwargs['dpi'] = dpi
+    fig_kwargs.update(kwargs)
+    
+    # Создаём фигуру
+    fig = plt.figure(**fig_kwargs)
+    
+    # --- Фоновая ось (вся фигура) с градиентом ---
+    ax_bg = fig.add_axes([0, 0, 1, 1], zorder=0)
+    ax_bg.axis('off')
+    
+    # Создаём градиентный массив
+    grad = np.linspace(0, 1, nx)
+    grad = np.tile(grad, (ny, 1))  # 2D полотно
+    
+    # Создаём цветовую карту из двух цветов
+    cmap = LinearSegmentedColormap.from_list("gradient_bg", gradient_colors)
+    
+    # Применяем градиент к фоновой оси
+    ax_bg.imshow(
+        grad, 
+        aspect='auto', 
+        cmap=cmap, 
+        extent=[0, 1, 0, 1], 
+        transform=fig.transFigure
+    )
+    
+    # --- Основная ось поверх с прозрачным фоном ---
+    ax = fig.add_axes(axes_position, zorder=1, facecolor='none')
+    
+    # Возвращаем обёрнутые оси
+    return fig, EleganAxes(ax)
 
 
 def gca() -> EleganAxes:

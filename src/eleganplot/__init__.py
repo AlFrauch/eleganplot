@@ -7,7 +7,7 @@ EleganPlot - Элегантные графики для Python.
 """
 
 from .theme import Theme, get_current_theme, list_themes, set_current_theme, apply_theme
-from .pyplot import figure, axes, subplots, gca, gcf, show, close, savefig
+from .pyplot import figure, axes, subplots, gradient_subplots, gca, gcf, show, close, savefig
 from .utils.gradient import gradient_fill
 from .utils.decorators import custom_axes_method, method_registry
 
@@ -16,6 +16,7 @@ __all__ = [
     "figure",
     "axes", 
     "subplots",
+    "gradient_subplots",
     "gca",
     "gcf",
     "show",
